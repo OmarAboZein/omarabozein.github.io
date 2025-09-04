@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omar Abo Zein</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            line-height: 1.6;
+            overflow-x: hidden;
+            /* Removed old binary SVG background and animation */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            padding: 2rem 0;
+            border-bottom: 1px solid #333;
+            position: relative;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: #fff;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+            background: linear-gradient(135deg, #000 0%, #111 100%);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+
+        .hero .subtitle {
+            font-size: 1.3rem;
+            color: #ccc;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .hero .description {
+            font-size: 1.1rem;
+            color: #aaa;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: 2px solid #fff;
+            background: transparent;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        .btn-secondary {
+            border-color: #666;
+            color: #ccc;
+        }
+
+        .btn-secondary:hover {
+            background: #666;
+            color: #fff;
+            border-color: #666;
+        }
+
+        /* Sections */
+        section {
+            padding: 4rem 0;
+            border-bottom: 1px solid #222;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .skill-item {
+            padding: 1.5rem 1rem;
+            border: 1px solid #333;
+            border-radius: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+            background: #0a0a0a;
+        }
+
+        .skill-item:hover {
+            border-color: #666;
+            background: #111;
+            transform: translateY(-2px);
+        }
+
+        .skill-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            margin-bottom: 0.3rem;
+            /* Prevent overflow and ensure centering */
+            overflow: visible;
+        }
+        .skill-icon svg {
+            width: 32px;
+            height: 32px;
+            display: block;
+            /* Remove any forced background or border */
+            background: none;
+            border: none;
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+            color: #ccc;
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Improved flipping card styles for projects */
+        .project-card {
+            perspective: 1200px;
+            background: transparent;
+            border: 1.5px solid #444;
+            border-radius: 22px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+            min-height: 280px;
+            transition: box-shadow 0.4s, border-color 0.4s;
+            padding: 0;
+            overflow: visible;
+        }
+
+        .project-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 1.6s cubic-bezier(.4,2,.3,.7); /* Slower and smoother */
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+
+        .project-card:hover .project-card-inner,
+        .project-card:focus-within .project-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .project-card-front, .project-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            background: #151515;
+            padding: 2rem 1.5rem;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1.5px solid #444;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        .project-card-back {
+            transform: rotateY(180deg);
+            z-index: 1;
+            background: #222;
+            color: #eee;
+            border-color: #666;
+            /* No content for now */
+        }
+
+        .project-card:hover,
+        .project-card:focus-within {
+            border-color: #888;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.22);
+        }
+
+        .project-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.7rem;
+            color: #fff;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .project-card p {
+            color: #ccc;
+            margin-bottom: 1.2rem;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .project-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: #222;
+            color: #ccc;
+            padding: 4px 14px;
+            font-size: 0.85rem;
+            border: 1px solid #333;
+            border-radius: 12px;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .project-links a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .project-links a:hover {
+            color: #fff;
+        }
+
+        /* Placeholder for empty projects */
+        .project-placeholder {
+            border: 2px dashed #333;
+            padding: 3rem;
+            text-align: center;
+            color: #666;
+            background: transparent;
+        }
+
+        .project-placeholder:hover {
+            border-color: #666;
+            transform: none;
+        }
+
+        /* Learning Journey */
+        .journey-timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .journey-timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #333;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-left: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 8px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #666;
+        }
+
+        .timeline-item.current::before {
+            background: #fff;
+        }
+
+        /* Contact */
+        .contact-content {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            padding: 1rem;
+            border: 1px solid #333;
+            color: #ccc;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            background: #0a0a0a;
+        }
+
+        .contact-link:hover {
+            color: #fff;
+            border-color: #666;
+            background: #111;
+            transform: translateY(-2px);
+        }
+
+        .contact-icon {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        /* Footer */
+        footer {
+            padding: 2rem 0;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #222;
+        }
+
+        /* Binary Rain */
+        #binary-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .binary-digit {
+            position: absolute;
+            color: #0f0;
+            font-size: 1.2rem;
+            opacity: 0.15;
+            font-family: monospace;
+            user-select: none;
+            animation: fall 3s linear infinite;
+        }
+
+        @keyframes fall {
+            from { transform: translateY(-40px); opacity: 0.15; }
+            to   { transform: translateY(100vh); opacity: 0.05; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .contact-links {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Profile Picture */
+        .hero-profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        /* Circular frame for profile picture */
+        .profile-frame {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #222;
+            margin-bottom: 1rem;
+        }
+
+        .profile-pic {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div id="binary-rain"></div>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo" id="shell-logo"></div>
+                <nav>
+                    <ul>
+                        <li><a href="#about"><strong>About</strong></a></li>
+                        <li><a href="#journey"><strong>Journey</strong></a></li>
+                        <li><a href="#projects"><strong>Projects</strong></a></li>
+                        <li><a href="#contact"><strong>Contact</strong></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container fade-in">
+            <div class="hero-profile">
+                <div class="profile-frame">
+                    <img src="8947615A-BFF7-4F92-A1D5-63CFE1F2D936.jpg" alt="Omar Abo Zein" class="profile-pic">
+                </div>
+            </div>
+            <h1 id="typewriter"></h1>
+            <p class="subtitle">AI Enthusiast • Deep Learning Explorer • MLOps Beginner</p>
+            <p class="description">
+                Passionate about artificial intelligence and machine learning. Currently diving deep into 
+                the fascinating world of neural networks, data science, and ML operations.
+            </p>
+            <div class="cta-buttons">
+                <a href="#projects" class="btn">View Projects</a>
+                <a href="https://github.com/OmarAboZein" class="btn btn-secondary" target="_blank">
+                    GitHub Profile →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content" style="display: flex; flex-wrap: wrap; gap: 3rem; align-items: flex-start;">
+                <div class="about-text" style="flex: 2;">
+                    <p style="font-size:1.15rem; color:#e0e0e0; margin-bottom:1.5rem;">
+                        I'm a beginner in the AI/ML space, driven by curiosity and a passion for understanding how machines can learn and make intelligent decisions.
+                    </p>
+                    <p style="font-size:1.05rem; color:#ccc; margin-bottom:1.5rem;">
+                        My journey started with basic programming and has evolved into exploring the depths of neural networks, computer vision, and natural language processing.
+                    </p>
+                    <p style="font-size:1.05rem; color:#ccc;">
+                        Currently focusing on building a strong foundation in machine learning fundamentals while experimenting with real-world projects and contributing to open-source initiatives.
+                    </p>
+                </div>
+                <div style="flex: 1;">
+                    <h3 style="text-align:center; font-size:1.1rem; color:#fff; font-weight:500; margin-bottom:1rem;">Technologies & Tools</h3>
+                    <div class="skills-grid" style="gap:0.5rem;">
+                        <div class="skill-item" style="font-size:0.9rem; padding:0.8rem 0.5rem;">
+                            <span class="skill-icon" aria-label="Python">
+                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python" style="width:56px; height:56px; object-fit:contain;" />
+                            </span>
+                            <span>Python</span>
+                        </div>
+                        <div class="skill-item" style="font-size:0.9rem; padding:0.8rem 0.5rem;">
+                            <span class="skill-icon" aria-label="TensorFlow">
+                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tensorflow/tensorflow-original-wordmark.svg" alt="TensorFlow" style="width:56px; height:56px; object-fit:contain;" />
+                            </span>
+                            <span>TensorFlow</span>
+                        </div>
+                        <div class="skill-item" style="font-size:0.9rem; padding:0.8rem 0.5rem;">
+                            <span class="skill-icon" aria-label="PyTorch">
+                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pytorch/pytorch-original.svg" alt="PyTorch" style="width:56px; height:56px; object-fit:contain;" />
+                            </span>
+                            <span>PyTorch</span>
+                        </div>
+                        <div class="skill-item" style="font-size:0.9rem; padding:0.8rem 0.5rem;">
+                            <span class="skill-icon" aria-label="Scikit-learn">
+                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/scikitlearn/scikitlearn-original.svg" alt="Scikit-learn" style="width:56px; height:56px; object-fit:contain;" />
+                            </span>
+                            <span>Scikit-learn</span>
+                        </div>
+                        <div class="skill-item" style="font-size:0.9rem; padding:0.8rem 0.5rem;">
+                            <span class="skill-icon" aria-label="Pandas">
+                                <!-- Pandas Official SVG -->
+                                <svg viewBox="0 0 48 48" width="32" height="32">
+                                    <rect x="14" y="8" width="6" height="32" rx="3" fill="#130654"/>
+                                    <rect x="28" y="8" width="6" height="32" rx="3" fill="#130654"/>
+                                    <circle cx="17" cy="12" r="3" fill="#E70488"/>
+                                    <circle cx="31" cy="36" r="3" fill="#E70488"/>
+                                </svg>
+                            </span>
+                            <span>Pandas</span>
+                        </div>
+                        <div class="skill-item" style="font-size:0.9rem; padding:0.8rem 0.5rem;">
+                            <span class="skill-icon" aria-label="NumPy">
+                                <!-- NumPy Official SVG -->
+                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/numpy/numpy-original-wordmark.svg" alt="NumPy" style="width:56px; height:56px; object-fit:contain;" />
+                            </span>
+                            <span>NumPy</span>
+                        </div>
+                        <div class="skill-item" style="font-size:0.9rem; padding:0.8rem 0.5rem;">
+                            <span class="skill-icon" aria-label="Docker">
+                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt="Docker" style="width:56px; height:56px; object-fit:contain;" />
+                            </span>
+                            <span>Docker</span>
+                        </div>
+                        <div class="skill-item" style="font-size:0.9rem; padding:0.8rem 0.5rem;">
+                            <span class="skill-icon" aria-label="Git">
+                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" alt="Git" style="width:56px; height:56px; object-fit:contain;" />
+                            </span>
+                            <span>Git</span>
+                        </div>
+                        <div class="skill-item" style="font-size:0.9rem; padding:0.8rem 0.5rem;">
+                            <span class="skill-icon" aria-label="Jupyter">
+                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jupyter/jupyter-original-wordmark.svg" alt="Jupyter" style="width:56px; height:56px; object-fit:contain;" />
+                            </span>
+                            <span>Jupyter</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Learning Journey -->
+    <section id="journey">
+        <div class="container">
+            <h2 class="section-title">My Learning Journey</h2>
+            <div class="journey-timeline">
+                <div class="timeline-item">
+                    <h3>Programming Fundamentals</h3>
+                    <p>Started with Python basics, data structures, and algorithms</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Data Science Foundations</h3>
+                    <p>Learned pandas, numpy, matplotlib for data manipulation and visualization</p>
+                </div>
+                <div class="timeline-item current">
+                    <h3>Machine Learning Deep Dive</h3>
+                    <p>Currently studying ML algorithms, neural networks, and deep learning frameworks</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>MLOps & Production</h3>
+                    <p>Next: Learning model deployment, monitoring, and ML pipeline automation</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Advanced AI Applications</h3>
+                    <p>Future: Computer vision, NLP, and cutting-edge AI research</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <div class="container">
+            <h2 class="section-title">Projects</h2>
+            <div class="projects-grid">
+                <!-- Project card 1 -->
+                <div class="project-card" tabindex="0">
+                    <div class="project-card-inner">
+                        <div class="project-card-front">
+                            <h3>AI Image Classifier</h3>
+                            <p>A neural network that classifies images into categories using TensorFlow and Keras.</p>
+                            <div class="project-tags">
+                                <span class="tag">TensorFlow</span>
+                                <span class="tag">Keras</span>
+                                <span class="tag">Python</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://github.com/yourusername/image-classifier" target="_blank">GitHub</a>
+                            </div>
+                        </div>
+                        <div class="project-card-back"></div>
+                    </div>
+                </div>
+                <!-- Project card 2 -->
+                <div class="project-card" tabindex="0">
+                    <div class="project-card-inner">
+                        <div class="project-card-front">
+                            <h3>ML Stock Predictor</h3>
+                            <p>Predicts stock prices using regression models and historical data analysis.</p>
+                            <div class="project-tags">
+                                <span class="tag">Scikit-learn</span>
+                                <span class="tag">Pandas</span>
+                                <span class="tag">Python</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://github.com/yourusername/stock-predictor" target="_blank">GitHub</a>
+                            </div>
+                        </div>
+                        <div class="project-card-back"></div>
+                    </div>
+                </div>
+                <!-- Project card 3 -->
+                <div class="project-card" tabindex="0">
+                    <div class="project-card-inner">
+                        <div class="project-card-front">
+                            <h3>Chatbot Assistant</h3>
+                            <p>A simple chatbot built with NLP techniques to answer user queries.</p>
+                            <div class="project-tags">
+                                <span class="tag">NLP</span>
+                                <span class="tag">Python</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://github.com/yourusername/chatbot-assistant" target="_blank">GitHub</a>
+                            </div>
+                        </div>
+                        <div class="project-card-back"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="contact-content">
+                <p style="font-size:1.15rem; color:#e0e0e0; margin-bottom:2rem;">
+                    I'm always open to discussing AI/ML projects, learning opportunities, or just having a conversation about the future of artificial intelligence.<br>
+                    <span style="color:#aaa;">Let's connect and build something amazing together!</span>
+                </p>
+                <div class="contact-links" style="margin-bottom:1rem;">
+                    <a href="mailto:omarabozein@outlook.com" class="contact-link" style="border-radius:16px;">
+                        <span class="contact-icon" aria-label="Email">
+                            <!-- Email SVG -->
+                            <svg width="24" height="24" fill="none" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <rect x="3" y="5" width="18" height="14" rx="2" ry="2"/>
+                                <polyline points="3 7 12 13 21 7"/>
+                            </svg>
+                        </span>
+                        <span style="font-weight:500;">Email</span>
+                    </a>
+                    <a href="https://github.com/OmarAboZein" target="_blank" class="contact-link" style="border-radius:16px;">
+                        <span class="contact-icon" aria-label="GitHub">
+                            <!-- GitHub SVG -->
+                            <svg width="24" height="24" fill="#ccc" viewBox="0 0 24 24">
+                                <path d="M12 2C6.477 2 2 6.484 2 12.012c0 4.428 2.865 8.184 6.839 9.525.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.892 1.529 2.341 1.088 2.91.833.091-.646.35-1.088.636-1.339-2.221-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.254-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.025A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.338 1.909-1.295 2.748-1.025 2.748-1.025.546 1.378.202 2.396.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.847-2.337 4.695-4.566 4.944.359.309.678.919.678 1.852 0 1.336-.012 2.417-.012 2.747 0 .267.18.578.688.48C19.138 20.192 22 16.44 22 12.012 22 6.484 17.523 2 12 2z"/>
+                            </svg>
+                        </span>
+                        <span style="font-weight:500;">GitHub</span>
+                    </a>
+                    <a href="https://linkedin.com/in/omarabozein" target="_blank" class="contact-link" style="border-radius:16px;">
+                        <span class="contact-icon" aria-label="LinkedIn">
+                            <!-- LinkedIn SVG -->
+                            <svg width="24" height="24" fill="#ccc" viewBox="0 0 24 24">
+                                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.268c-.966 0-1.75-.784-1.75-1.75s.784-1.75 1.75-1.75 1.75.784 1.75 1.75-.784 1.75-1.75 1.75zm13.5 11.268h-3v-5.604c0-1.337-.026-3.063-1.868-3.063-1.869 0-2.156 1.459-2.156 2.967v5.7h-3v-10h2.881v1.367h.041c.401-.761 1.379-1.563 2.838-1.563 3.036 0 3.599 2.001 3.599 4.601v5.595z"/>
+                        </span>
+                        <span style="font-weight:500;">LinkedIn</span>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Omar Abo Zein. Built with HTML, CSS, and passion for AI.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Simple fade-in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Binary rain effect
+        const rainContainer = document.getElementById('binary-rain');
+        const columns = Math.floor(window.innerWidth / 20);
+
+        function createDigit(col) {
+            const digit = document.createElement('span');
+            digit.className = 'binary-digit';
+            digit.textContent = Math.random() > 0.5 ? '1' : '0';
+            digit.style.left = `${col * 20}px`;
+            digit.style.top = `-${Math.random() * 100}px`;
+            digit.style.animationDuration = `${7 + Math.random() * 5}s`; // Even slower: 7-12 seconds
+            rainContainer.appendChild(digit);
+
+            digit.addEventListener('animationend', () => {
+                rainContainer.removeChild(digit);
+            });
+        }
+
+        setInterval(() => {
+            for (let col = 0; col < columns; col++) {
+                if (Math.random() > 0.985) createDigit(col); // Even lower chance, fewer digits per frame
+            }
+        }, 150); // Slower interval
+
+        // Typewriter animation for "Omar Abo Zein" as if being coded in HTML
+        const typewriterElement = document.getElementById('typewriter');
+        const typewriterText = '&lt;h1&gt;Omar Abo Zein&lt;/h1&gt;';
+        let typeIndex = 0;
+
+        function typeWriter() {
+            if (typeIndex <= typewriterText.length) {
+                typewriterElement.innerHTML = typewriterText.slice(0, typeIndex) +
+                    '<span style="color:#fff;">|</span>'; // Cursor is now white
+                typeIndex++;
+                setTimeout(typeWriter, 80);
+            } else {
+                typewriterElement.innerHTML = typewriterText;
+            }
+        }
+
+        // Shell-style typewriter animation for "abozein.dev"
+        const shellLogoElement = document.getElementById('shell-logo');
+        const shellText = '➜ ~ abozein.dev';
+        let shellIndex = 0;
+
+        function shellTypeWriter() {
+            if (shellIndex <= shellText.length) {
+                shellLogoElement.innerHTML = shellText.slice(0, shellIndex) +
+                    '<span style="color:#fff;">█</span>'; // White cursor
+                shellIndex++;
+                setTimeout(shellTypeWriter, 70);
+            } else {
+                shellLogoElement.innerHTML = shellText;
+            }
+        }
+
+        // Start animations on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            typeWriter();
+            shellTypeWriter();
+        });
+    </script>
+</body></html>
